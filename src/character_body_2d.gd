@@ -21,7 +21,7 @@ const MAX_JUMP_TIME = 0.5
 # Minimum jump height and maximum jump height to have a max hold time.
 
 
-func fast_fall_multiplier():
+func calculate_gravity(delta: float):
 	var multi = 1.0
 	
 	if velocity.y > 0:
@@ -30,11 +30,11 @@ func fast_fall_multiplier():
 	if is_jumping:
 		multi *= FLOATING_JUMP_MULTIPLIER
 	
-	return multi
+	return multi * GRAVITY * delta
 
 func handle_in_air(delta: float):
 	in_air_time += delta
-	velocity.y += GRAVITY * delta * fast_fall_multiplier()
+	velocity.y += calculate_gravity(delta)
 
 func request_jump():
 	is_requesting_jump = true
