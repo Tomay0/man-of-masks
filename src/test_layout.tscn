@@ -1,11 +1,9 @@
 [gd_scene format=4 uid="uid://c82xlnuqf40rb"]
 
-[ext_resource type="Script" uid="uid://bqcrql1bby45h" path="res://src/character_body_2d.gd" id="1_6it13"]
 [ext_resource type="Texture2D" uid="uid://cs50cu26dhexf" path="res://res/kenney_abstract-platformer/Tilesheet/tilesheet_complete.png" id="1_ct00a"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c4g02"]
-radius = 16.0
-height = 96.0
+[ext_resource type="PackedScene" uid="uid://cdhuo61gx6min" path="res://src/character/character.tscn" id="1_xxsm4"]
+[ext_resource type="PackedScene" uid="uid://ditncmox2y0hd" path="res://src/bouncer/bouncer.tscn" id="3_xxsm4"]
+[ext_resource type="PackedScene" uid="uid://ne0boa80qwcj" path="res://src/orb/orb.tscn" id="4_dx18m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6it13"]
 texture = ExtResource("1_ct00a")
@@ -230,25 +228,20 @@ texture_region_size = Vector2i(64, 64)
 [sub_resource type="TileSet" id="TileSet_c4g02"]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
+physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_6it13")
 
 [node name="TestLayout" type="Node2D" unique_id=2133316534]
 
-[node name="CharacterBody2D" type="CharacterBody2D" parent="." unique_id=1142040368]
-script = ExtResource("1_6it13")
-
-[node name="Camera2D" type="Camera2D" parent="CharacterBody2D" unique_id=878887493]
-offset = Vector2(0, -128)
-
-[node name="ColorRect" type="ColorRect" parent="CharacterBody2D" unique_id=44661666]
-offset_left = -21.0
-offset_top = -103.0
-offset_right = 21.0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="CharacterBody2D" unique_id=476162553]
-position = Vector2(0, -48)
-shape = SubResource("CapsuleShape2D_c4g02")
+[node name="Character" parent="." unique_id=372133085 instance=ExtResource("1_xxsm4")]
 
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1144172196]
 tile_map_data = PackedByteArray("AAD8/wAAAAABAAkAAAD9/wAAAAACAAkAAAD+/wAAAAACAAkAAAD//wAAAAACAAkAAAAAAAAAAAACAAkAAAABAAAAAAACAAkAAAACAAAAAAACAAkAAAADAAAAAAACAAkAAAAEAAAAAAACAAkAAAAFAAAAAAACAAkAAAAGAAAAAAACAAkAAAAHAAAAAAACAAkAAAD8/wEAAAAAAAkAAAD9/wEAAAAAAAkAAAD8/wIAAAAAAAkAAAD9/wIAAAAAAAkAAAD+/wIAAAAAAAkAAAD//wIAAAAAAAkAAAAAAAIAAAAAAAkAAAABAAIAAAAAAAkAAAACAAIAAAAAAAkAAAADAAIAAAAAAAkAAAAEAAIAAAAAAAkAAAAFAAIAAAAAAAkAAAAGAAIAAAAAAAkAAAAHAAIAAAAAAAkAAAAHAAEAAAAAAAkAAAAGAAEAAAAAAAkAAAAFAAEAAAAAAAkAAAAEAAEAAAAAAAkAAAADAAEAAAAAAAkAAAACAAEAAAAAAAkAAAABAAEAAAAAAAkAAAAAAAEAAAAAAAkAAAD//wEAAAAAAAkAAAD+/wEAAAAAAAkAAAAIAAEAAAAAAAkAAAAIAAIAAAAAAAkAAAAIAAAAAAACAAkAAAAJAAAAAAACAAkAAAAKAAAAAAADAAkAAAAJAAEAAAAAAAkAAAAKAAEAAAAAAAkAAAAJAAIAAAAAAAkAAAAKAAIAAAAAAAkAAAAEAPz/AAAFAAkAAAAFAPz/AAAGAAkAAAAGAPz/AAAGAAkAAAAHAPz/AAAGAAkAAAAIAPz/AAAGAAkAAAAJAPz/AAAHAAkAAAA=")
 tile_set = SubResource("TileSet_c4g02")
+
+[node name="Bouncer" parent="." unique_id=2029663926 instance=ExtResource("3_xxsm4")]
+position = Vector2(209, 0)
+
+[node name="Area2D" parent="." unique_id=1490147094 instance=ExtResource("4_dx18m")]
+position = Vector2(125, -386)
+script = null

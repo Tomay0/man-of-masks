@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://cdhuo61gx6min"]
+
+[ext_resource type="Script" uid="uid://bqcrql1bby45h" path="res://src/character/character.gd" id="1_65gcu"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c4g02"]
+radius = 14.0
+height = 96.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_yny20"]
+radius = 23.0
+height = 114.0
+
+[node name="Character" type="CharacterBody2D" unique_id=372133085]
+collision_layer = 2
+script = ExtResource("1_65gcu")
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=415739528]
+offset = Vector2(0, -128)
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=97940559]
+offset_left = -21.0
+offset_top = -103.0
+offset_right = 21.0
+
+[node name="MainCollision" type="CollisionShape2D" parent="." unique_id=2091634481]
+position = Vector2(0, -48)
+shape = SubResource("CapsuleShape2D_c4g02")
+
+[node name="JumpOrbCollider" type="Area2D" parent="." unique_id=1926889845]
+collision_layer = 2
+collision_mask = 8
+
+[node name="OrbCollision" type="CollisionShape2D" parent="JumpOrbCollider" unique_id=1339648564]
+position = Vector2(0, -50)
+shape = SubResource("CapsuleShape2D_yny20")

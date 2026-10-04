@@ -13,8 +13,11 @@ const FLOATING_JUMP_MULTIPLIER = 0.4
 const FAST_FALL_MULTIPLIER = 1.5
 const JUMP_PRESS_BUFFER = 0.05
 const COYOTE_PRESS_BUFFER = 0.125
+const ORB_COYOTE_PRESS_BUFFER = 0.025
 const MIN_JUMP_TIME = 0.1
 const MAX_JUMP_TIME = 0.5
+
+@onready var jump_orb_collider: Area2D = $JumpOrbCollider
 
 # fast fall - when your velocity goes to falling - increase gravity
 # hold jump - 2 gravity constants, when you release you go to heavier gravity.
@@ -36,26 +39,33 @@ func handle_in_air(delta: float):
 	in_air_time += delta
 	velocity.y += calculate_gravity(delta)
 
+# when you land on the groud, reset 'in air time'
+func handle_on_floor(delta: float):
+	in_air_time = 0
+
+func handle_orb_in_air(delta: float):
+	in_air_time = COYOTE_PRESS_BUFFER - ORB_COYOTE_PRESS_BUFFER
+	velocity.y += calculate_gravity(delta)
+	
 func request_jump():
 	is_requesting_jump = true
 	jump_press_time = 0
 
 # trigger an actual jump, switch from 'requesting' to actually jumping
-func jump():
-	velocity.y = JUMP_VELOCITY
+func jump(jump_multiplier=1):
+	velocity.y = JUMP_VELOCITY * jump_multiplier
 	jump_time = 0
 	is_requesting_jump = false
 	is_jumping = true
+
+func touching_orb():
+	return jump_orb_collider.get_overlapping_areas().size() > 0
 
 # attempt to jump
 func try_jump():
 	if is_requesting_jump and jump_press_time <= JUMP_PRESS_BUFFER and in_air_time <= COYOTE_PRESS_BUFFER:
 		jump()
-	
 
-# when you land on the groud, reset 'in air time'
-func handle_on_floor(delta: float):
-	in_air_time = 0
 
 func hold_jump_time(delta: float):
 	jump_time += delta
@@ -85,14 +95,10 @@ func _physics_process(delta: float) -> void:
 	
 	if is_on_floor():
 		handle_on_floor(delta)
+	elif touching_orb():
+		handle_orb_in_air(delta)
 	else:
 		handle_in_air(delta)
-		
-	print("JUMP PRESS TIME: %s" % jump_press_time)
-	print("In air time: %s" % in_air_time)
-	print("Jump time: %s" % jump_time)
-	print("Is requesting jump: %s" % is_requesting_jump)
-	print("Is jumping: %s" % is_jumping)
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
