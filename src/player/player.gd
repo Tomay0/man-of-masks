@@ -1,10 +1,12 @@
 extends CharacterBody2D
+class_name Player
 
 var jump_press_time = 0
 var in_air_time = 0
 var jump_time = 0
 var is_requesting_jump = false
 var is_jumping = false
+var facing_right = true
 
 const SPEED = 300.0
 const GRAVITY = 3000.0
@@ -18,6 +20,8 @@ const MIN_JUMP_TIME = 0.1
 const MAX_JUMP_TIME = 0.5
 
 @onready var jump_orb_collider: Area2D = $JumpOrbCollider
+@onready var room_left_collider: Area2D = $RoomLeftCollider
+@onready var room_right_collider: Area2D = $RoomRightCollider
 
 # fast fall - when your velocity goes to falling - increase gravity
 # hold jump - 2 gravity constants, when you release you go to heavier gravity.
@@ -77,6 +81,20 @@ func hold_jump_time(delta: float):
 	if jump_time > MAX_JUMP_TIME:
 		is_jumping = false
 
+func room_collider():
+	if facing_right:
+		return room_right_collider
+	return room_left_collider
+
+func detect_room_change():
+	for area in room_collider().get_overlapping_areas():
+		var room := area.get_parent() as Room
+		if room == null:
+			push_error("Room collider not within room")
+			continue
+		
+		get_parent().set_current_room(room.room_id)
+	
 
 func _physics_process(delta: float) -> void:
 	if Input.is_action_pressed("ui_accept"):
@@ -105,7 +123,10 @@ func _physics_process(delta: float) -> void:
 	var direction := Input.get_axis("ui_left", "ui_right")
 	if direction:
 		velocity.x = direction * SPEED
+		facing_right = direction > 0
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
 
 	move_and_slide()
+	
+	detect_room_change()

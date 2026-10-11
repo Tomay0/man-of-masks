@@ -1,12 +1,13 @@
-[gd_scene format=4 uid="uid://c82xlnuqf40rb"]
+[gd_scene format=4 uid="uid://cqow064i52h8"]
 
-[ext_resource type="Texture2D" uid="uid://cs50cu26dhexf" path="res://res/kenney_abstract-platformer/Tilesheet/tilesheet_complete.png" id="1_ct00a"]
-[ext_resource type="PackedScene" uid="uid://cdhuo61gx6min" path="res://src/character/character.tscn" id="1_xxsm4"]
-[ext_resource type="PackedScene" uid="uid://ditncmox2y0hd" path="res://src/bouncer/bouncer.tscn" id="3_xxsm4"]
-[ext_resource type="PackedScene" uid="uid://ne0boa80qwcj" path="res://src/orb/orb.tscn" id="4_dx18m"]
+[ext_resource type="Script" uid="uid://bxkuo6rt4jc1s" path="res://src/world/rooms/room.gd" id="1_l7eyc"]
+[ext_resource type="Texture2D" uid="uid://cs50cu26dhexf" path="res://res/kenney_abstract-platformer/Tilesheet/tilesheet_complete.png" id="1_mm5ws"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6it13"]
-texture = ExtResource("1_ct00a")
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mm5ws"]
+size = Vector2(1472, 896)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_n2rm2"]
+texture = ExtResource("1_mm5ws")
 texture_region_size = Vector2i(64, 64)
 1:0/0 = 0
 1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
@@ -225,23 +226,24 @@ texture_region_size = Vector2i(64, 64)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
 
-[sub_resource type="TileSet" id="TileSet_c4g02"]
+[sub_resource type="TileSet" id="TileSet_vhvnu"]
 tile_size = Vector2i(64, 64)
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
-sources/0 = SubResource("TileSetAtlasSource_6it13")
+sources/0 = SubResource("TileSetAtlasSource_n2rm2")
 
-[node name="TestLayout" type="Node2D" unique_id=2133316534]
+[node name="Room2" type="Node2D" unique_id=634146322]
+script = ExtResource("1_l7eyc")
+adjacent_room_ids = Array[String](["room1"])
 
-[node name="Character" parent="." unique_id=372133085 instance=ExtResource("1_xxsm4")]
+[node name="RoomBorder" type="Area2D" parent="." unique_id=1143481655]
+collision_layer = 16
+collision_mask = 0
 
-[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=1144172196]
-tile_map_data = PackedByteArray("AAD8/wAAAAABAAkAAAD9/wAAAAACAAkAAAD+/wAAAAACAAkAAAD//wAAAAACAAkAAAAAAAAAAAACAAkAAAABAAAAAAACAAkAAAACAAAAAAACAAkAAAADAAAAAAACAAkAAAAEAAAAAAACAAkAAAAFAAAAAAACAAkAAAAGAAAAAAACAAkAAAAHAAAAAAACAAkAAAD8/wEAAAAAAAkAAAD9/wEAAAAAAAkAAAD8/wIAAAAAAAkAAAD9/wIAAAAAAAkAAAD+/wIAAAAAAAkAAAD//wIAAAAAAAkAAAAAAAIAAAAAAAkAAAABAAIAAAAAAAkAAAACAAIAAAAAAAkAAAADAAIAAAAAAAkAAAAEAAIAAAAAAAkAAAAFAAIAAAAAAAkAAAAGAAIAAAAAAAkAAAAHAAIAAAAAAAkAAAAHAAEAAAAAAAkAAAAGAAEAAAAAAAkAAAAFAAEAAAAAAAkAAAAEAAEAAAAAAAkAAAADAAEAAAAAAAkAAAACAAEAAAAAAAkAAAABAAEAAAAAAAkAAAAAAAEAAAAAAAkAAAD//wEAAAAAAAkAAAD+/wEAAAAAAAkAAAAIAAEAAAAAAAkAAAAIAAIAAAAAAAkAAAAIAAAAAAACAAkAAAAJAAAAAAACAAkAAAAKAAAAAAADAAkAAAAJAAEAAAAAAAkAAAAKAAEAAAAAAAkAAAAJAAIAAAAAAAkAAAAKAAIAAAAAAAkAAAAEAPz/AAAFAAkAAAAFAPz/AAAGAAkAAAAGAPz/AAAGAAkAAAAHAPz/AAAGAAkAAAAIAPz/AAAGAAkAAAAJAPz/AAAHAAkAAAA=")
-tile_set = SubResource("TileSet_c4g02")
+[node name="RoomBorderCollision" type="CollisionShape2D" parent="RoomBorder" unique_id=563645592]
+position = Vector2(2208, -256)
+shape = SubResource("RectangleShape2D_mm5ws")
 
-[node name="Bouncer" parent="." unique_id=2029663926 instance=ExtResource("3_xxsm4")]
-position = Vector2(209, 0)
-
-[node name="Area2D" parent="." unique_id=1490147094 instance=ExtResource("4_dx18m")]
-position = Vector2(125, -386)
-script = null
+[node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=171809727]
+tile_map_data = PackedByteArray("AAAXAP3/AAAAAAkAAAAXAPz/AAAAAAkAAAAXAPv/AAAAAAkAAAAXAPr/AAAAAAkAAAAXAPn/AAAAAAkAAAAXAPj/AAAAAAkAAAAXAPb/AAAAAAkAAAAXAPf/AAAAAAkAAAAXAAAAAAACAAkAAAAXAAEAAAAAAAkAAAAXAAIAAAAAAAkAAAAYAAIAAAAAAAkAAAAYAAEAAAAAAAkAAAAZAAEAAAAAAAkAAAAaAAEAAAAAAAkAAAAbAAEAAAAAAAkAAAAcAAEAAAAAAAkAAAAdAAEAAAAAAAkAAAAdAAIAAAAAAAkAAAAcAAIAAAAAAAkAAAAbAAIAAAAAAAkAAAAaAAIAAAAAAAkAAAAZAAIAAAAAAAkAAAAYAAAAAAACAAkAAAAZAAAAAAACAAkAAAAaAAAAAAACAAkAAAAbAAAAAAACAAkAAAAcAAAAAAACAAkAAAAdAAAAAAACAAkAAAAeAAAAAAACAAkAAAAeAAEAAAAAAAkAAAAeAAIAAAAAAAkAAAA=")
+tile_set = SubResource("TileSet_vhvnu")
