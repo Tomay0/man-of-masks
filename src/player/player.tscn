@@ -12,7 +12,7 @@ radius = 14.0
 height = 96.0
 
 [sub_resource type="SegmentShape2D" id="SegmentShape2D_mf2ua"]
-a = Vector2(0, -52)
+a = Vector2(0, 24)
 b = Vector2(0, 51)
 
 [node name="Player" type="CharacterBody2D" unique_id=372133085]
@@ -20,10 +20,10 @@ collision_layer = 2
 script = ExtResource("1_65gcu")
 
 [node name="Camera" type="Camera2D" parent="." unique_id=415739528]
-offset = Vector2(0, -128)
 limit_left = 0
+limit_bottom = 192
+position_smoothing_speed = 10.0
 script = ExtResource("2_rxibo")
-CAMERA_SMOOTHING_SPEED = 2.0
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=97940559]
 offset_left = -21.0

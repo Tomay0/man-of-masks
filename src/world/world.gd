@@ -49,7 +49,7 @@ func set_current_room(room_id: StringName):
 	if DEBUG_FREE_CAM:
 		return
 	
-	camera.set_room_bounds(current_room)
+	camera.smooth_transition_into_room(current_room)
 
 # when transitioning to a new room - load all adjacent rooms to it and unload any that are not.
 func set_loaded_rooms():

@@ -10,7 +10,7 @@ var facing_right = true
 
 const SPEED = 300.0
 const GRAVITY = 3000.0
-const JUMP_VELOCITY = -800.0
+const JUMP_VELOCITY = -850.0
 const FLOATING_JUMP_MULTIPLIER = 0.4
 const FAST_FALL_MULTIPLIER = 1.5
 const JUMP_PRESS_BUFFER = 0.05

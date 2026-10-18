@@ -1,0 +1,60 @@
+[gd_scene format=3 uid="uid://cdhuo61gx6min"]
+
+[ext_resource type="Script" uid="uid://bqcrql1bby45h" path="res://src/player/player.gd" id="1_65gcu"]
+[ext_resource type="Script" uid="uid://b8soett1851ge" path="res://src/player/camera.gd" id="2_rxibo"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_rxibo"]
+radius = 23.0
+height = 114.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c4g02"]
+radius = 14.0
+height = 96.0
+
+[sub_resource type="SegmentShape2D" id="SegmentShape2D_mf2ua"]
+a = Vector2(0, -52)
+b = Vector2(0, 51)
+
+[node name="Player" type="CharacterBody2D" unique_id=372133085]
+collision_layer = 2
+script = ExtResource("1_65gcu")
+
+[node name="Camera" type="Camera2D" parent="." unique_id=415739528]
+limit_left = 0
+script = ExtResource("2_rxibo")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=97940559]
+offset_left = -21.0
+offset_top = -103.0
+offset_right = 21.0
+
+[node name="JumpOrbCollider" type="Area2D" parent="." unique_id=1926889845]
+collision_layer = 0
+collision_mask = 8
+
+[node name="OrbCollision" type="CollisionShape2D" parent="JumpOrbCollider" unique_id=1339648564]
+position = Vector2(0, -50)
+shape = SubResource("CapsuleShape2D_rxibo")
+debug_color = Color(0, 0.9607843, 0.37254903, 0.41960785)
+
+[node name="MainCollision" type="CollisionShape2D" parent="." unique_id=2091634481]
+position = Vector2(0, -48)
+shape = SubResource("CapsuleShape2D_c4g02")
+
+[node name="RoomLeftCollider" type="Area2D" parent="." unique_id=1356432300]
+collision_layer = 0
+collision_mask = 16
+
+[node name="RoomCollision" type="CollisionShape2D" parent="RoomLeftCollider" unique_id=547457457]
+position = Vector2(-14, -51)
+shape = SubResource("SegmentShape2D_mf2ua")
+debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="RoomRightCollider" type="Area2D" parent="." unique_id=1905703648]
+collision_layer = 0
+collision_mask = 16
+
+[node name="RoomCollision" type="CollisionShape2D" parent="RoomRightCollider" unique_id=1410094113]
+position = Vector2(14, -51)
+shape = SubResource("SegmentShape2D_mf2ua")
+debug_color = Color(1, 0, 0, 0.41960785)
