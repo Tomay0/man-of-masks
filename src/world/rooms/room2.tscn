@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bxkuo6rt4jc1s" path="res://src/world/rooms/room.gd" id="1_l7eyc"]
 [ext_resource type="Texture2D" uid="uid://cs50cu26dhexf" path="res://res/kenney_abstract-platformer/Tilesheet/tilesheet_complete.png" id="1_mm5ws"]
+[ext_resource type="Script" uid="uid://fh0c228q7pd5" path="res://src/world/unlockable.gd" id="3_f4q32"]
+[ext_resource type="Script" uid="uid://d0ubepdf0noir" path="res://src/world/temporary_object.gd" id="3_g43yk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mm5ws"]
 size = Vector2(1472, 896)
@@ -232,6 +234,12 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_n2rm2")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_f4q32"]
+size = Vector2(48, 192)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3agn1"]
+size = Vector2(128, 192.5)
+
 [node name="Room2" type="Node2D" unique_id=634146322]
 script = ExtResource("1_l7eyc")
 adjacent_room_ids = Array[String](["room1", "room3"])
@@ -244,6 +252,45 @@ collision_mask = 0
 position = Vector2(2208, -256)
 shape = SubResource("RectangleShape2D_mm5ws")
 
+[node name="Checkpoints" type="Node2D" parent="." unique_id=217352192]
+
+[node name="Marker2D2" type="Marker2D" parent="Checkpoints" unique_id=1211129562]
+position = Vector2(2112, -512)
+gizmo_extents = 64.0
+
+[node name="Marker2D" type="Marker2D" parent="Checkpoints" unique_id=996809959]
+position = Vector2(1536, 0)
+gizmo_extents = 64.0
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=171809727]
 tile_map_data = PackedByteArray("AAAXAP3/AAAAAAkAAAAXAPz/AAAAAAkAAAAXAPv/AAAAAAkAAAAXAPr/AAAAAAkAAAAXAPn/AAAAAAkAAAAXAPj/AAAAAAkAAAAXAPb/AAAAAAkAAAAXAPf/AAAAAAkAAAAXAAAAAAACAAkAAAAXAAEAAAAAAAkAAAAXAAIAAAAAAAkAAAAYAAIAAAAAAAkAAAAYAAEAAAAAAAkAAAAZAAEAAAAAAAkAAAAaAAEAAAAAAAkAAAAbAAEAAAAAAAkAAAAcAAEAAAAAAAkAAAAdAAEAAAAAAAkAAAAdAAIAAAAAAAkAAAAcAAIAAAAAAAkAAAAbAAIAAAAAAAkAAAAaAAIAAAAAAAkAAAAZAAIAAAAAAAkAAAAYAAAAAAACAAkAAAAZAAAAAAACAAkAAAAaAAAAAAACAAkAAAAbAAAAAAACAAkAAAAcAAAAAAACAAkAAAAdAAAAAAACAAkAAAAeAAAAAAACAAkAAAAeAAEAAAAAAAkAAAAeAAIAAAAAAAkAAAAfAAAAAAACAAkAAAAgAAAAAAACAAkAAAAhAAAAAAACAAkAAAAiAAAAAAACAAkAAAAjAAAAAAACAAkAAAAkAAAAAAACAAkAAAAlAAAAAAACAAkAAAAmAAAAAAACAAkAAAAnAAAAAAACAAkAAAAoAAAAAAACAAkAAAApAAAAAAACAAkAAAAqAAAAAAACAAkAAAArAAAAAAACAAkAAAAsAAAAAAACAAkAAAAtAAAAAAACAAkAAAAfAAEAAAAAAAkAAAAfAAIAAAAAAAkAAAAgAAIAAAAAAAkAAAAhAAIAAAAAAAkAAAAiAAIAAAAAAAkAAAAjAAIAAAAAAAkAAAAjAAEAAAAAAAkAAAAkAAEAAAAAAAkAAAAlAAEAAAAAAAkAAAAmAAEAAAAAAAkAAAAnAAEAAAAAAAkAAAAoAAEAAAAAAAkAAAApAAEAAAAAAAkAAAAqAAEAAAAAAAkAAAArAAEAAAAAAAkAAAAsAAEAAAAAAAkAAAAtAAEAAAAAAAkAAAAtAAIAAAAAAAkAAAAsAAIAAAAAAAkAAAArAAIAAAAAAAkAAAAqAAIAAAAAAAkAAAApAAIAAAAAAAkAAAAoAAIAAAAAAAkAAAAnAAIAAAAAAAkAAAAmAAIAAAAAAAkAAAAlAAIAAAAAAAkAAAAkAAIAAAAAAAkAAAAgAAEAAAAAAAkAAAAhAAEAAAAAAAkAAAAiAAEAAAAAAAkAAAAeAPz/AAAHAAoAAAAfAPz/AAAIAAoAAAAgAPj/AAAHAAoAAAAhAPj/AAAIAAoAAAAkAPb/AAAHAAoAAAAlAPb/AAACAAkAAAAmAPb/AAACAAkAAAAnAPb/AAAIAAoAAAAXAPX/AAAAAAMAAAA=")
 tile_set = SubResource("TileSet_vhvnu")
+
+[node name="lock" type="Node2D" parent="." unique_id=1261306973]
+script = ExtResource("3_g43yk")
+object_id = &"lock_thing"
+
+[node name="Unlockarea" type="Area2D" parent="lock" unique_id=377202112]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_f4q32")
+key_id = &"key"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="lock/Unlockarea" unique_id=1167402730]
+position = Vector2(2816, -96)
+shape = SubResource("RectangleShape2D_f4q32")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="lock" unique_id=345120501]
+collision_mask = 0
+
+[node name="ColorRect" type="ColorRect" parent="lock/StaticBody2D" unique_id=1760047458]
+offset_left = 2816.0
+offset_top = -192.0
+offset_right = 2944.0
+color = Color(0.1961909, 0.00049045234, 0.38790533, 1)
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="lock/StaticBody2D" unique_id=1351094223]
+position = Vector2(2880, -95.75)
+shape = SubResource("RectangleShape2D_3agn1")
+
+[connection signal="body_entered" from="lock/Unlockarea" to="lock/Unlockarea" method="_on_body_entered"]

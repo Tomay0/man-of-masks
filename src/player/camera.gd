@@ -93,17 +93,11 @@ func camera_is_contained(room: Room) -> bool:
 	return bounds.encloses(camera_bounds)
 
 func target_position(room: Room) -> Vector2:
-	print("CALCULATING TARGET POS")
-	print("global: " + str(global_position))
 	var bounds := room.get_room_bounds()
-	print("room bounds: " + str(bounds))
-	print("viewport size: " + str(get_viewport_rect().size / zoom))
 	var half_view: Vector2 = get_viewport_rect().size / zoom / 2.0
 
 	var target_x: float = global_position.x
 	var target_y: float = global_position.y
-	
-	print(bounds.end.x - half_view.x)
 
 	if global_position.x < bounds.position.x + half_view.x:
 		target_x = bounds.position.x + half_view.x
@@ -114,12 +108,8 @@ func target_position(room: Room) -> Vector2:
 		target_y = bounds.position.y + half_view.y
 	elif global_position.y > bounds.end.y - half_view.y:
 		target_y = bounds.end.y - half_view.y
-		
-	print("target: " + str(target_x) + ", " + str(target_y))
 
 	return Vector2(target_x, target_y)
-	
-
 
 func _process(delta: float) -> void:
 	if transitioning_room == null:

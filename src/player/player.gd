@@ -16,7 +16,7 @@ const FAST_FALL_MULTIPLIER = 1.5
 const JUMP_PRESS_BUFFER = 0.05
 const COYOTE_PRESS_BUFFER = 0.125
 const ORB_COYOTE_PRESS_BUFFER = 0.025
-const MIN_JUMP_TIME = 0.1
+const MIN_JUMP_TIME = 0.15 # should be higher than COYOTE_PRESS_BUFFER to avoid double jump
 const MAX_JUMP_TIME = 0.5
 
 @onready var jump_orb_collider: Area2D = $JumpOrbCollider
@@ -105,7 +105,7 @@ func _physics_process(delta: float) -> void:
 		hold_jump_time(delta)
 	
 	# attempt to jump when you press the button
-	if Input.is_action_just_pressed("ui_accept"):
+	if Input.is_action_just_pressed("ui_accept") and not is_jumping:
 		request_jump()
 	
 	# will try jumping if a jump has been requested and the conditions for jumping have been met

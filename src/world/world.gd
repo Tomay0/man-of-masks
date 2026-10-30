@@ -9,10 +9,14 @@ const DEBUG_FREE_CAM = false
 @onready var camera := $Player/Camera
 
 @onready var rooms_node := $LoadedRooms
-var current_room: Room
+var current_room: Room = null
+var current_checkpoint: Vector2
 
 var current_room_id: StringName
 var loaded_rooms := {}
+
+var removed_objects := {}
+var inventory := {}
 
 func load_room(room_id: StringName, room_scene: PackedScene=null):	
 	var room_path := "res://src/world/rooms/%s.tscn" % room_id
@@ -35,14 +39,30 @@ func unload_room(room_id: StringName):
 	rooms_node.remove_child(room)
 	loaded_rooms.erase(room_id)
 	room.queue_free()
-	
+
+func get_closest_position(start_position: Vector2, possible_positions: Array[Vector2]) -> Vector2:
+	var closest_position: Vector2 = Vector2.ZERO
+	var closest_distance: float = INF
+
+	for pos in possible_positions:
+		var distance = start_position.distance_squared_to(pos)
+
+		if distance < closest_distance:
+			closest_distance = distance
+			closest_position = pos
+
+	return closest_position
 
 func set_current_room(room_id: StringName):
 	if room_id == current_room_id:
 		return
+	
+	print("setting current room to " + room_id)
+	current_room = loaded_rooms[room_id]
+	
+	current_checkpoint = get_closest_position(player.global_position, current_room.get_checkpoints())
 
 	current_room_id = room_id
-	current_room = loaded_rooms[room_id]
 	
 	set_loaded_rooms()
 	
@@ -61,6 +81,39 @@ func set_loaded_rooms():
 		if room_id != current_room_id and room_id not in current_room.adjacent_room_ids:
 			unload_room(room_id)
 
+func reset_room():
+	if current_room == null:
+		return
+	
+	unload_room(current_room_id)
+	load_room(current_room_id)
+	current_room = loaded_rooms[current_room_id]
+	player.global_position = current_checkpoint
+
+func collect_item(item_id: StringName):
+	if not inventory.has(item_id):
+		inventory[item_id] = 0
+	inventory[item_id] += 1
+
+func has_collected_item(item_id: StringName):
+	return inventory.has(item_id)
+
+func use_item(item_id: StringName):
+	if not inventory.has(item_id):
+		return false
+		
+	inventory[item_id] -= 1
+	if inventory[item_id] == 0:
+		inventory.erase(item_id)
+		
+	return true
+
+
+func remove_object(object_id: StringName):
+	removed_objects[object_id] = true
+
+func should_remove_object(object_id: StringName):
+	return removed_objects.has(object_id)
 
 func _ready() -> void:
 	load_room(FIRST_ROOM, preload(FIRST_ROOM_PATH))

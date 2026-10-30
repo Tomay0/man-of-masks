@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://bxkuo6rt4jc1s" path="res://src/world/rooms/room.gd" id="1_oae1g"]
 [ext_resource type="PackedScene" uid="uid://ditncmox2y0hd" path="res://src/bouncer/bouncer.tscn" id="2_oae1g"]
 [ext_resource type="PackedScene" uid="uid://ne0boa80qwcj" path="res://src/orb/orb.tscn" id="3_in8y3"]
+[ext_resource type="Script" uid="uid://dyvumm0t6hlts" path="res://src/obstacle/obstacle.gd" id="5_in8y3"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vniqe"]
 size = Vector2(1472, 896)
@@ -234,11 +235,25 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_1e5eb")
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_duwm1"]
+size = Vector2(64, 16)
+
 [node name="Room1" type="Node2D" unique_id=634146322]
 script = ExtResource("1_oae1g")
 adjacent_room_ids = Array[String](["room2"])
 
+[node name="Checkpoints" type="Node2D" parent="." unique_id=260210240]
+
+[node name="Marker2D2" type="Marker2D" parent="Checkpoints" unique_id=287133331]
+position = Vector2(1408, 0)
+gizmo_extents = 64.0
+
+[node name="Marker2D" type="Marker2D" parent="Checkpoints" unique_id=1685498429]
+position = Vector2(96, 0)
+gizmo_extents = 64.0
+
 [node name="RoomBorder" type="Area2D" parent="." unique_id=1105807256]
+visible = false
 collision_layer = 16
 collision_mask = 0
 
@@ -255,3 +270,22 @@ position = Vector2(209, 0)
 
 [node name="Orb" parent="." unique_id=2141922847 instance=ExtResource("3_in8y3")]
 position = Vector2(125, -386)
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1005479573]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("5_in8y3")
+
+[node name="ColorRect" type="ColorRect" parent="Area2D" unique_id=468739764]
+offset_left = 704.0
+offset_top = -24.0
+offset_right = 768.0
+color = Color(1, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=1159423328]
+position = Vector2(736, -8)
+shape = SubResource("RectangleShape2D_duwm1")
+debug_color = Color(1, 0, 0, 0.41960785)
+
+[connection signal="body_entered" from="Area2D" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="Area2D" to="Area2D" method="_on_body_entered"]

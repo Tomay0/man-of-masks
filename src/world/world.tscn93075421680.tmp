@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://c82xlnuqf40rb"]
+
+[ext_resource type="PackedScene" uid="uid://cdhuo61gx6min" path="res://src/player/player.tscn" id="1_1k4gi"]
+[ext_resource type="Script" uid="uid://vm1aqjvkod10" path="res://src/world/world.gd" id="1_6fy3g"]
+
+[node name="World" type="Node2D" unique_id=2133316534]
+script = ExtResource("1_6fy3g")
+
+[node name="Player" parent="." unique_id=372133085 instance=ExtResource("1_1k4gi")]
+position = Vector2(96, 0)
+
+[node name="LoadedRooms" type="Node2D" parent="." unique_id=438544060]

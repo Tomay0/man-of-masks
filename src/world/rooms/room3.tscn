@@ -2,6 +2,8 @@
 
 [ext_resource type="Script" uid="uid://bxkuo6rt4jc1s" path="res://src/world/rooms/room.gd" id="1_1oie8"]
 [ext_resource type="Texture2D" uid="uid://cs50cu26dhexf" path="res://res/kenney_abstract-platformer/Tilesheet/tilesheet_complete.png" id="2_2bebo"]
+[ext_resource type="Script" uid="uid://c8laqaarr8v51" path="res://src/world/collectable.gd" id="3_0plp0"]
+[ext_resource type="Script" uid="uid://d0ubepdf0noir" path="res://src/world/temporary_object.gd" id="4_1oie8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_vniqe"]
 size = Vector2(1472, 896)
@@ -232,6 +234,9 @@ physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 sources/0 = SubResource("TileSetAtlasSource_1e5eb")
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_3agn1"]
+radius = 16.0
+
 [node name="Room3" type="Node2D" unique_id=634146322]
 script = ExtResource("1_1oie8")
 adjacent_room_ids = Array[String](["room2"])
@@ -244,6 +249,37 @@ collision_mask = 0
 position = Vector2(2208, -1152)
 shape = SubResource("RectangleShape2D_vniqe")
 
+[node name="Checkpoints" type="Node2D" parent="." unique_id=598732899]
+
+[node name="Marker2D" type="Marker2D" parent="Checkpoints" unique_id=1438511465]
+position = Vector2(2432, -768)
+gizmo_extents = 64.0
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=968196290]
 tile_map_data = PackedByteArray("AAAlAPT/AAAHAAoAAAAmAPT/AAACAAkAAAAnAPT/AAACAAkAAAAoAPT/AAACAAkAAAApAPT/AAACAAkAAAAqAPT/AAACAAkAAAArAPT/AAACAAkAAAAsAPT/AAACAAkAAAAtAPT/AAAIAAoAAAA=")
 tile_set = SubResource("TileSet_1xt5n")
+
+[node name="KeyThing" type="Node2D" parent="." unique_id=1512556290]
+script = ExtResource("4_1oie8")
+object_id = &"key_thing"
+
+[node name="KeyCollectable" type="Area2D" parent="KeyThing" unique_id=1084463905]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("3_0plp0")
+item_id = &"key"
+
+[node name="ColorRect" type="ColorRect" parent="KeyThing/KeyCollectable" unique_id=1468325236]
+offset_left = 2520.0
+offset_top = -816.0
+offset_right = 2552.0
+offset_bottom = -784.0
+color = Color(0, 1, 0, 1)
+metadata/_edit_use_anchors_ = true
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KeyThing/KeyCollectable" unique_id=1258776099]
+position = Vector2(2536, -800)
+shape = SubResource("CircleShape2D_3agn1")
+debug_color = Color(0, 0.8567572, 0.1160324, 0.41960785)
+
+[connection signal="body_entered" from="KeyThing/KeyCollectable" to="KeyThing/KeyCollectable" method="_on_body_entered"]

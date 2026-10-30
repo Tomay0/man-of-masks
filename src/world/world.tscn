@@ -7,6 +7,6 @@
 script = ExtResource("1_6fy3g")
 
 [node name="Player" parent="." unique_id=372133085 instance=ExtResource("1_1k4gi")]
-position = Vector2(27, 0)
+position = Vector2(96, 0)
 
 [node name="LoadedRooms" type="Node2D" parent="." unique_id=438544060]
