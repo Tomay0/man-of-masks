@@ -93,7 +93,7 @@ func detect_room_change():
 			push_error("Room collider not within room")
 			continue
 		
-		get_parent().set_current_room(room.room_id)
+		World.get_rooms().set_current_room(room.room_id)
 	
 
 func _physics_process(delta: float) -> void:

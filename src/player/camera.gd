@@ -1,4 +1,5 @@
 extends Camera2D
+class_name Camera
 
 # @export var CAMERA_SMOOTHING_SPEED: float = 5.0
 

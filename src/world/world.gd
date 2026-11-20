@@ -3,118 +3,42 @@ class_name World
 
 const FIRST_ROOM = "room1"
 const FIRST_ROOM_PATH = "res://src/world/rooms/room1.tscn"
-const DEBUG_FREE_CAM = false
 
-@onready var player := $Player
-@onready var camera := $Player/Camera
-
-@onready var rooms_node := $LoadedRooms
-var current_room: Room = null
-var current_checkpoint: Vector2
-
-var current_room_id: StringName
-var loaded_rooms := {}
+@onready var player: Player = $Player
+@onready var camera: Camera = $Player/Camera
+@onready var rooms: RoomManager = $RoomManager
+@onready var inventory: Inventory = $Inventory
+@onready var objects: ObjectStateManager = $ObjectStateManager
 
 var removed_objects := {}
-var inventory := {}
 
-func load_room(room_id: StringName, room_scene: PackedScene=null):	
-	var room_path := "res://src/world/rooms/%s.tscn" % room_id
+static var _instance: World = null
+
+static func get_instance() -> World:
+	return _instance
+
+static func get_player() -> Player:
+	return _instance.player
+
+static func get_camera() -> Camera:
+	return _instance.camera
+
+static func get_rooms() -> RoomManager:
+	return _instance.rooms
+
+static func get_inventory() -> Inventory:
+	return _instance.inventory
 	
-	if room_scene == null:
-		room_scene = load(room_path)
-		if room_scene == null:
-			push_error("Could not load room: " + str(room_path))
-			return
-	
-	var room : Room = room_scene.instantiate()
-	loaded_rooms[room_id] = room
-	rooms_node.add_child(room)
+static func get_objects() -> ObjectStateManager:
+	return _instance.objects
 
-func unload_room(room_id: StringName):
-	var room : Room = loaded_rooms[room_id]
-	if room == null:
-		return
-		
-	rooms_node.remove_child(room)
-	loaded_rooms.erase(room_id)
-	room.queue_free()
+func _enter_tree() -> void:
+	_instance = self
 
-func get_closest_position(start_position: Vector2, possible_positions: Array[Vector2]) -> Vector2:
-	var closest_position: Vector2 = Vector2.ZERO
-	var closest_distance: float = INF
-
-	for pos in possible_positions:
-		var distance = start_position.distance_squared_to(pos)
-
-		if distance < closest_distance:
-			closest_distance = distance
-			closest_position = pos
-
-	return closest_position
-
-func set_current_room(room_id: StringName):
-	if room_id == current_room_id:
-		return
-	
-	print("setting current room to " + room_id)
-	current_room = loaded_rooms[room_id]
-	
-	current_checkpoint = get_closest_position(player.global_position, current_room.get_checkpoints())
-
-	current_room_id = room_id
-	
-	set_loaded_rooms()
-	
-	if DEBUG_FREE_CAM:
-		return
-	
-	camera.smooth_transition_into_room(current_room)
-
-# when transitioning to a new room - load all adjacent rooms to it and unload any that are not.
-func set_loaded_rooms():
-	for room_id in current_room.adjacent_room_ids:
-		if not loaded_rooms.keys().has(room_id):
-			load_room(room_id)
-	
-	for room_id in loaded_rooms.keys():
-		if room_id != current_room_id and room_id not in current_room.adjacent_room_ids:
-			unload_room(room_id)
-
-func reset_room():
-	if current_room == null:
-		return
-	
-	unload_room(current_room_id)
-	load_room(current_room_id)
-	current_room = loaded_rooms[current_room_id]
-	player.global_position = current_checkpoint
-
-func collect_item(item_id: StringName):
-	if not inventory.has(item_id):
-		inventory[item_id] = 0
-	inventory[item_id] += 1
-
-func has_collected_item(item_id: StringName):
-	return inventory.has(item_id)
-
-func use_item(item_id: StringName):
-	if not inventory.has(item_id):
-		return false
-		
-	inventory[item_id] -= 1
-	if inventory[item_id] == 0:
-		inventory.erase(item_id)
-		
-	return true
-
-
-func remove_object(object_id: StringName):
-	removed_objects[object_id] = true
-
-func should_remove_object(object_id: StringName):
-	return removed_objects.has(object_id)
+func _exit_tree() -> void:
+	if _instance == self:
+		_instance = null
 
 func _ready() -> void:
-	load_room(FIRST_ROOM, preload(FIRST_ROOM_PATH))
-	set_current_room(FIRST_ROOM)
+	rooms.load_room(FIRST_ROOM, preload(FIRST_ROOM_PATH))
+	rooms.set_current_room(FIRST_ROOM)

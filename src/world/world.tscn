@@ -2,11 +2,23 @@
 
 [ext_resource type="PackedScene" uid="uid://cdhuo61gx6min" path="res://src/player/player.tscn" id="1_1k4gi"]
 [ext_resource type="Script" uid="uid://vm1aqjvkod10" path="res://src/world/world.gd" id="1_6fy3g"]
+[ext_resource type="Script" uid="uid://60u7u0704fqe" path="res://src/world/room_manager.gd" id="2_jte2u"]
+[ext_resource type="Script" uid="uid://dockcnvl5fla" path="res://src/world/object_state_manager.gd" id="3_bsf3i"]
+[ext_resource type="Script" uid="uid://bjare63cgwggd" path="res://src/world/inventory.gd" id="4_43c6p"]
 
 [node name="World" type="Node2D" unique_id=2133316534]
 script = ExtResource("1_6fy3g")
 
+[node name="RoomManager" type="Node2D" parent="." unique_id=1641916321]
+script = ExtResource("2_jte2u")
+
+[node name="LoadedRooms" type="Node2D" parent="RoomManager" unique_id=438544060]
+
+[node name="ObjectStateManager" type="Node2D" parent="." unique_id=1545507788]
+script = ExtResource("3_bsf3i")
+
+[node name="Inventory" type="Node2D" parent="." unique_id=1281002531]
+script = ExtResource("4_43c6p")
+
 [node name="Player" parent="." unique_id=372133085 instance=ExtResource("1_1k4gi")]
 position = Vector2(96, 0)
-
-[node name="LoadedRooms" type="Node2D" parent="." unique_id=438544060]

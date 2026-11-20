@@ -4,12 +4,12 @@ class_name TemporaryObject
 @export var object_id: StringName
 
 func _ready() -> void:
-	var world : World = get_tree().current_scene
-	
-	if world.should_remove_object(object_id):
+	var object_state_manager := World.get_objects()
+
+	if object_state_manager.should_remove(object_id):
 		queue_free()
 
 func remove_from_world() -> void:
-	var world : World = get_tree().current_scene
-	world.remove_object(object_id)
+	var object_state_manager := World.get_objects()
+	object_state_manager.remove(object_id)
 	queue_free()
